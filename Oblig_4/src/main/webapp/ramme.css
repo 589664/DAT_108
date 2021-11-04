@@ -1,0 +1,13 @@
+
+input[type="password"].mediumPassword {
+	border-color: #CCCC00 !important;
+}
+
+input[type="text"], input[type="password"], input[name="mobil"]{
+	border-color: green !important;
+}
+
+input[type="text"]:invalid, input[type="password"]:invalid, input[name="mobil"]:invalid{
+	border-color: red !important;
+}
+
