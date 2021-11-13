@@ -40,14 +40,14 @@ public class Paamelding_Servlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+		Validator valid = new Validator(req);
+		
 		String fornavn = req.getParameter("fornavn");
 		String etternavn = req.getParameter("etternavn");
 		Integer mobil = Integer.valueOf(req.getParameter("mobil"));
 		String passordKlarT = req.getParameter("passord");
 		String passordRepetert = req.getParameter("passordRepetert");
 		List<Deltager> deltaL = deltager_DAO.hente_alle_deltagerer();
-		
-		
 		
 		boolean finnes = deltaL.stream()
 		.map(d -> d.getMobil())
@@ -57,9 +57,13 @@ public class Paamelding_Servlet extends HttpServlet {
 			resp.sendRedirect("logginn" + "?feilkode=brukerExists");
 		}
 		
-		else if (!Validator.gyldigDeltager(mobil, fornavn, etternavn, passordKlarT, passordRepetert)) {
-			resp.sendRedirect("deltagere" + "?feilkode=invalidInnput");
-		}else{
+		else if (!valid.gyldigDeltager(mobil, fornavn, etternavn, passordKlarT, passordRepetert)) {
+			valid.feilMeldinger();
+			req.getSession().setAttribute("validator", valid);
+			resp.sendRedirect("deltagere");
+		}
+		
+		else{
 			Passord passord = Passord.lagPassord(passordKlarT);
 			Kjonn kjonn = req.getParameter("kjonn").equals("mann") ? Kjonn.mann : Kjonn.kvinne; 
 			Deltager deltager = new Deltager(mobil, fornavn, etternavn, kjonn, passord);

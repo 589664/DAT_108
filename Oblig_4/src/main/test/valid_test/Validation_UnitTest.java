@@ -11,11 +11,12 @@ import fest_oblig4.Validator;
 
 public class Validation_UnitTest {
 	
-	private static final String RIKTIG_PASSORD = "Bjarte kan gå å henge seg";
-	private static final String FEIL_PASSORD = "Livet er bra";
+	private static final String RIKTIG_PASSORD = "Hei";
+	private static final String FEIL_PASSORD = "Nei";
 	
 	private String salt;
 	private String hash;
+	Validator valid = new Validator();
 	
 	@BeforeEach
 	void setup() {
@@ -35,23 +36,32 @@ public class Validation_UnitTest {
 	
 	@Test
 	void navnValidator() {
-		assertTrue(Validator.gyldigNavn("Klarsson Øygard"));
-		assertTrue(Validator.gyldigNavn("Klarsson-Øygard"));
-		assertFalse(Validator.gyldigNavn("Per"));
-		assertFalse(Validator.gyldigNavn("Per!!!!"));
+		assertTrue(valid.gyldigNavn("Klarsson Øygard"));
+		assertTrue(valid.gyldigNavn("Klarsson-Øygard"));
+		assertFalse(valid.gyldigNavn("Per"));
+		assertFalse(valid.gyldigNavn("Per!!!!"));
 	}
 	
 	@Test
 	void mobilValidator() {
-		assertTrue(Validator.gyldigMobil("11223344"));
-		assertFalse(Validator.gyldigMobil("1222"));
+		assertTrue(valid.gyldigMobil("11223344"));
+		assertFalse(valid.gyldigMobil("1222"));
 	}
 	
 	@Test
 	void passValidator() {
-		assertTrue(Validator.gyldigPass("!pass123","!pass123"));
-		assertFalse(Validator.gyldigPass("!pass123","!pass1234"));
-		assertFalse(Validator.gyldigPass("!...pass123","!...pass1234"));
+		assertTrue(valid.gyldigPass("!pass123"));
+		assertTrue(valid.gyldigPass("!pass $"));
+		assertFalse(valid.gyldigPass("!...pass123"));
+		assertTrue(valid.gyldigPassRep("pass", "pass"));
+		assertFalse(valid.gyldigPassRep("pass", "pass1"));
+	}
+	
+	@Test
+	void kjonn() {
+		assertTrue(valid.gyldigKjonn("mann"));
+		assertTrue(valid.gyldigKjonn("kvinne"));
+		assertFalse(valid.gyldigKjonn("menneske"));
 	}
 	
 

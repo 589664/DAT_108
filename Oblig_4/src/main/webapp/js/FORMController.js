@@ -18,7 +18,7 @@ class FORMController{
 			document.getElementById("passRep").setCustomValidity("Repetert passord er feil");
 		}
 
-		this.sjekkPassordStyrke(document.getElementById("passRep"));
+		this.sjekkPassordStyrke(document.getElementById("pass"));
 	}
 
 	sjekkPassordStyrke(event) {
@@ -27,10 +27,10 @@ class FORMController{
 
 		if (validity.valid) {
 			if (!this.passordValidator.passStr(passInp)) {
-				document.getElementById("passRep").classList.add("mediumPassword");
+				document.getElementById("pass").classList.add("mediumPassword");
 			}
 			else{
-				document.getElementById("passRep").classList.remove("mediumPassword");
+				document.getElementById("pass").classList.remove("mediumPassword");
 			}
 		}
 	}
