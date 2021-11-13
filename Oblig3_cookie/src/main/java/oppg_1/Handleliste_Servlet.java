@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -41,7 +42,6 @@ public class Handleliste_Servlet extends HttpServlet {
 		}
     	
     	else {
-  
 			Cookie[] cookies = req.getCookies();
 			
 			List <String> verdi = Stream.of(cookies)
@@ -54,38 +54,38 @@ public class Handleliste_Servlet extends HttpServlet {
 
 			PrintWriter out = resp.getWriter();
 			
+			out.println(
+					"<!DOCTYPE html>"
+					+ "<html>"
+					+ "<head>"
+					+ "<meta charset=\"ISO-8859-1\">"
+					+ "<title>Handleliste</title>"
+					+ "</head>"
+					+ "<body>"
+					+ "<form action=\"\" + HANDLELISTE_URL + \"\" method=\"post\">"
+					+ "</table><br/>"
+					+ "<fieldset>"
+					+ "<legend>Legge til:</legend>"
+					+ "<input type=\"text\" name=\"ting\" />\r\n"
+					+ "<input type=\"submit\" value=\"Legg til handlelisto\" />"
+					+ "<p>Handlelisten:</p>"
+					);
 			
-			out.println("<!DOCTYPE html>");
-			out.println("<html>");
-			out.println("<head>");
-			out.println("<meta charset=\"ISO-8859-1\">");
-			out.println("<title>Handleliste</title>");
-			out.println("</head>");
-			out.println("<body>");
-			
-			out.println("<form action=\"" + HANDLELISTE_URL + "\" method=\"post\">");
-			out.println("</table><br/>");
-			
-			out.println("<fieldset>");
-			out.println("<legend>Legge til:</legend>");
-			out.println("<input type=\"text\" name=\"ting\" />\r\n");
-			out.println("<input type=\"submit\" value=\"Legg til handlelisto\" />");
-			out.println("<p>Handlelisten:</p>");
 			verdi.forEach(x -> {
 				try {
 					out.println("<p><button type=\"submit\" value=\"" + escapeHtml(x) + "\" name=\"slettVaren\"> Slett </button>" + " " + URLDecoder.decode(escapeHtml(x), "ISO-8859-1") + "</p>");
 				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			});
-			out.println("</fieldset>");
-			out.println("</form>");
-			out.println("</body>");
-			out.println("</html>");
 			
-		}
-    	
+			out.println(
+					"</fieldset>"
+					+ "</form>"
+					+ "</body>"
+					+ "</html>"
+					);	
+		}//else
     }//doget
     
     @Override
@@ -107,21 +107,28 @@ public class Handleliste_Servlet extends HttpServlet {
 				resp.addCookie(cookie);
 			}
 			
+			
 			if (slett != null) {
 				Cookie[] cookies = req.getCookies();
 				
-				for (Cookie cookie : cookies) {
-					if (cookie.getName().equals(slett)) {
-						cookie.setMaxAge(0);
-						resp.addCookie(cookie);
+				Arrays.asList(cookies).forEach(x -> {
+					if(x.getName().equals(slett)) {
+						x.setMaxAge(0);
+						resp.addCookie(x);
 					}
-				}	
+				});
+				
+//				alternativ vanlig:
+//				for (Cookie cookie : cookies) {
+//					if (cookie.getName().equals(slett)) {
+//						cookie.setMaxAge(0);
+//						resp.addCookie(cookie);
+//					}
+//				}	
 			}
 			
 			resp.sendRedirect(HANDLELISTE_URL);
 		}
     	
     }//dopost
-    
-    
 }//class

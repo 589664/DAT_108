@@ -23,7 +23,7 @@ public class CookieUtil {
 			// Should never happen
 			e.printStackTrace();
 		}
-	}
+	}//addCookieToResponse
 	
 	public static String getCookieFromRequest(HttpServletRequest request, String navn) {
 		
@@ -46,27 +46,5 @@ public class CookieUtil {
 		}
 		
 		return verdi;
-	}
-
-//	public static String getCookieFromRequest(HttpServletRequest request, String navn) {
-//		String verdi = null;
-//		try {
-//			verdi = Arrays.stream(request.getCookies())
-//					.filter(c -> c.getName().equals(navn))
-//					.map(Cookie::getValue)
-//					.findFirst().orElseThrow();
-//
-//			verdi = URLDecoder.decode(verdi, CHARACTER_ENCODING);
-//
-//		} catch (NullPointerException e) {
-//			// If no cookie in request.
-//			// null is returned
-//			
-//		} catch (UnsupportedEncodingException e) {
-//			// Should never happen
-//			e.printStackTrace();
-//		}
-//		return verdi;
-//	}
-	
-}
+	}//getCookieFromRequest
+}//class CookieUtil

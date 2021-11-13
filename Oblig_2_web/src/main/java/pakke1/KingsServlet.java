@@ -49,7 +49,7 @@ public class KingsServlet extends HttpServlet {
 		        out.println("</head>");
 		        out.println("<body>");
 		        out.println("<img src="+ konge.getBilde() + " width=\"400\" height=\"600\">");
-		        out.println("<input type=\"button\" onclick=\"window.location.href='http://localhost:8080/kissmy.../';\" value=\"Søk igjen!\" />");
+		        out.println("<input type=\"button\" onclick=\"window.location.href='http://localhost:8080/kissmy.../';\" value=\"Søk igjen!\"/>");
 		        out.println("</body>");
 		        out.println("</html>");
 			}
